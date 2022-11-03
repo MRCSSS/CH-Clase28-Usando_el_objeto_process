@@ -129,6 +129,12 @@ app.get('/logout', async (req, res)=> {
 
 app.use('/register', register);
 
+app.get('/info', (req, res) => {
+    const memUsageData = process.memoryUsage();
+
+    res.render('partials/info-content', { layout: 'info', info: process, memUsage: memUsageData});
+})
+
 /* ===================== NORMALIZANDO MENSAJES ====================== */
 const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' });
 const messageSchema = new schema.Entity('post', { author: authorSchema }, { idAttribute: 'id' });
