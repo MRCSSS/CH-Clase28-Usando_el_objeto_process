@@ -1,14 +1,14 @@
 /* ---------------------- MODULOS IMPORTADOS ------------------------ */
 import httpServer from './src/server.js'
-import * as dotenv from 'dotenv';
+import minimist from "minimist";
 
-/* ----------------- CONF DE VARIABLES DE ENTORNO ------------------- */
-dotenv.config();
+/* -------------------------- INSTANCIANDO -------------------------- */
+let options = {alias: {modo: 'm', p: 'port', d: 'debug'}, default: {p: 8080, m: 'prod', debug: false}};
+let args =minimist(process.argv.slice(2), options)
 
 /* ---------------------------- SERVIDOR ---------------------------- */
-const PORT = process.env.PORT;
-const server = httpServer.listen(PORT, () => {
-    console.log(`Server listening: http://localhost:${PORT}`);
+const server = httpServer.listen(args.port, () => {
+    console.log(`Server listening: http://localhost:${args.port}`);
 })
 
 server.on('error', err => {
