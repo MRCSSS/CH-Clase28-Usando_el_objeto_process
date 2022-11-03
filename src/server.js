@@ -13,6 +13,7 @@ import path from 'path';
 import { Server } from 'socket.io';
 import { msgsDao, productsDao, usersDao } from './daos/index.js';
 import register from './routes/register.routes.js';
+import randoms from './routes/randoms.routes.js';
 
 dotenv.config();
 
@@ -134,6 +135,8 @@ app.get('/info', (req, res) => {
 
     res.render('partials/info-content', { layout: 'info', info: process, memUsage: memUsageData});
 })
+
+app.use('/api', randoms);
 
 /* ===================== NORMALIZANDO MENSAJES ====================== */
 const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' });
