@@ -1,8 +1,7 @@
 /* ---------------------- MODULOS IMPORTADOS ------------------------ */
 import { promises as fs } from 'fs';
-import config from '../config.js';
 import moment from 'moment';
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 
 /* ------------------------ CLASE CONTENEDOR ------------------------ */
 class ContFile {
