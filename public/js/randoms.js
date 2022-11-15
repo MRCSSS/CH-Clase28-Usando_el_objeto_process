@@ -1,11 +1,11 @@
 /* ---------------------------- MODULOS -----------------------------*/
-const socket = io();
+// const socket = io();
 
 /* ---------------------------- WEBSOCKET ---------------------------*/
-socket.on('serv-rNumbs', randomNumbersResult => {
+// socket.on('serv-rNumbs', randomNumbersResult => {
     renderNumbers( randomNumbersResult ).then(html => {
         document.getElementById('randomCount').innerHTML = html;
-    });
+    // });
 });
 
 /* --------------------------- HANDLEBARS ---------------------------*/

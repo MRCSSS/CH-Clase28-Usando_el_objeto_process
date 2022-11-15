@@ -24,7 +24,7 @@ const io = new Server(httpServer);
 const exphbs = create({
     defaultLayout: null,
     extname: 'hbs'
-})
+});
 
 /* ================== PERSISTENCIA DE SESION MONGO ================== */
 const MongoStore = connectMongo.create({
@@ -36,10 +36,6 @@ const MongoStore = connectMongo.create({
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
-app.use((req, res, next) => {
-    req.io = io;
-    next();
-});
 
     /* --------------------- Session Setup --------------------- */
 app.use(session({
@@ -48,7 +44,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     rolling: true
-}))
+}));
 
     /* ----------------- Session Authorization ----------------- */
 function auth(req, res, next) {
@@ -100,7 +96,7 @@ app.get('/', (req, res) => {
     } else {
         res.redirect('/home');
     }
-})
+});
 
 app.get('/home', auth, async (req, res) => {
     const user = await usersDao.searchUser(req.session.passport.user);
@@ -118,7 +114,7 @@ app.post('/login', passport.authenticate('local', {
 
 app.get('/login-error', (req, res)=>{
     res.render('partials/login-error', {layout: 'login'});
-})
+});
 
 app.get('/logout', async (req, res)=> {
     const user = await usersDao.searchUser(req.session.passport.user);
@@ -132,15 +128,14 @@ app.get('/logout', async (req, res)=> {
     });
 });
 
-app.use('/register', register);
-
 app.get('/info', (req, res) => {
     const memUsageData = process.memoryUsage();
 
     res.render('partials/info-content', { layout: 'info', info: process, memUsage: memUsageData});
-})
+});
 
 app.use('/api', randoms);
+app.use('/register', register);
 
 /* ===================== NORMALIZANDO MENSAJES ====================== */
 const authorSchema = new schema.Entity('author', {}, { idAttribute: 'email' });
@@ -165,12 +160,12 @@ io.on('connection', async (socket) => {
     socket.on('client-msg', async (msg) => {
         await msgsDao.save(msg);
         io.sockets.emit('serv-msgs', await getAllNormalized());
-    })
+    });
     socket.on('client-prods', async (prod) => {
         await productsDao.save(prod);
         io.sockets.emit('serv-prods', await productsDao.getAll());
-    })
-})
+    });
+});
 
 /* ====================== MODULOS EXPORTADOS ======================== */
 export default httpServer;
